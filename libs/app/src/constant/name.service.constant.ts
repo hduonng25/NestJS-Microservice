@@ -1,0 +1,4 @@
+export enum NAME_SERVICE {
+   USER = 'SERVICE_USER',
+   PRODUCT = 'SERVICE_PRODUCT'
+}
