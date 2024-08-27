@@ -1,6 +1,9 @@
-import { AllConfigType } from '@app/app';
+import { AppConfigsType } from '@app/app';
 import { ServiceConfigProduct } from './service.config.type';
 
-export type AllConfigServiceProduct = AllConfigType & {
+export * from './service.config.type';
+
+export type ProductConfigType = {
+   app: AppConfigsType;
    service: ServiceConfigProduct;
 };

@@ -1,36 +1,34 @@
 import { Logger, Module } from '@nestjs/common';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import appConfig from './config/app.config';
-import { DatabaseModule } from '@app/database';
-import { ClientProvider, ClientsModule, Transport } from '@nestjs/microservices';
-import { NAME_SERVICE } from '@app/app';
-import { DemoController } from './demo/demo.controller';
-import { DemoService } from './demo/demo.service';
 import serviceConfig from './config/service.config';
-import { ProductConfigType } from './config';
-import { SecurityModule } from '@app/security';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { NAME_SERVICE } from '@app/app';
+import { AuthConfigType } from './config';
 
 @Module({
    imports: [
       ConfigModule.forRoot({
          isGlobal: true,
-         envFilePath: ['apps/product/.env'],
+         envFilePath: ['apps/auth/.env'],
          load: [appConfig, serviceConfig],
       }),
 
       ClientsModule.registerAsync([
          {
             name: NAME_SERVICE.USER,
-            inject: [ConfigService],
             imports: [ConfigModule],
-            useFactory: async (configService: ConfigService<ProductConfigType>): Promise<ClientProvider> => {
+            inject: [ConfigService],
+            useFactory: async (configService: ConfigService<AuthConfigType>) => {
                try {
                   const host: string = configService.getOrThrow('service.user.host', { infer: true });
                   const port: number = configService.getOrThrow('service.user.port', { infer: true });
 
                   Logger.log(
-                     `Service Product connect to Microservice User on host: ${host} and port: ${port}`,
-                     'AppModule - Product',
+                     `Service Auth connect to Microservice User on host: ${host} and port: ${port}`,
+                     'AppModule - Auth',
                   );
 
                   return {
@@ -46,11 +44,8 @@ import { SecurityModule } from '@app/security';
             },
          },
       ]),
-
-      DatabaseModule,
-      SecurityModule,
    ],
-   controllers: [DemoController],
-   providers: [DemoService],
+   controllers: [AuthController],
+   providers: [AuthService],
 })
-export class ProductModule {}
+export class AuthModule {}

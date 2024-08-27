@@ -7,9 +7,9 @@
    "license": "UNLICENSED",
    "scripts": {
       "build": "nest build",
-      "format": "prettier --write \"apps/**/*.ts\" \"**/**/*.json\" \"libs/**/*.ts\"",
+      "format": "npx prettier --write \"!**/build\" \"**/*.{ts,tsx,md,js,json}\"",
       "start": "pm2 start ecosystem.config.js --env prod",
-      "start:dev": "pm2 start ecosystem.config.js --env dev",
+      "start:dev": "pnpm build && pm2 start ecosystem.config.js --env dev",
       "stop": "pm2 stop all",
       "start:debug": "nest start --debug --watch",
       "start:prod": "node dist/apps/nest-micro/main",
@@ -25,14 +25,19 @@
       "@nestjs/common": "^10.4.1",
       "@nestjs/config": "^3.2.3",
       "@nestjs/core": "^10.4.1",
+      "@nestjs/jwt": "^10.2.0",
       "@nestjs/mapped-types": "^2.0.5",
       "@nestjs/microservices": "^10.4.1",
       "@nestjs/mongoose": "^10.0.10",
+      "@nestjs/passport": "^10.0.3",
       "@nestjs/platform-express": "^10.4.1",
       "@types/bcrypt": "^5.0.2",
       "bcrypt": "^5.1.1",
       "class-transformer": "^0.5.1",
+      "class-validator": "^0.14.1",
       "mongoose": "^8.5.4",
+      "passport": "^0.7.0",
+      "passport-jwt": "^4.0.1",
       "reflect-metadata": "^0.2.2",
       "rxjs": "^7.8.1",
       "uuid": "^10.0.0"
@@ -44,6 +49,7 @@
       "@types/express": "^4.17.21",
       "@types/jest": "^29.5.12",
       "@types/node": "^20.16.1",
+      "@types/passport-jwt": "^4.0.1",
       "@types/supertest": "^6.0.2",
       "@typescript-eslint/eslint-plugin": "^7.18.0",
       "@typescript-eslint/parser": "^7.18.0",
@@ -84,7 +90,9 @@
          "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
          "^@app/app(|/.*)$": "<rootDir>/libs/app/src/$1",
          "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1",
-         "^@app/result(|/.*)$": "<rootDir>/libs/result/src/$1"
+         "^@app/result(|/.*)$": "<rootDir>/libs/result/src/$1",
+         "^@app/sercurity(|/.*)$": "<rootDir>/libs/sercurity/src/$1",
+         "^@app/security(|/.*)$": "<rootDir>/libs/security/src/$1"
       }
    }
 }

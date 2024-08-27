@@ -33,4 +33,10 @@ export class Users extends BaseSchema {
       type: String,
    })
    password: string;
+
+   @Prop({
+      required: false,
+      type: String,
+   })
+   role: string;
 }
