@@ -1,11 +1,11 @@
 export class CreateUserDTO {
-   name: string;
+    name: string;
 
-   email: string;
+    email: string;
 
-   age: number;
+    age: number;
 
-   phone: string;
+    phone: string;
 
-   password: string;
+    password: string;
 }

@@ -4,13 +4,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { MongoDbConnect } from './mongodb.connect';
 
 @Module({
-   imports: [
-      ConfigModule,
-      MongooseModule.forRootAsync({
-         imports: [ConfigModule],
-         useClass: MongoDbConnect,
-      }),
-   ],
-   providers: [MongoDbConnect],
+    imports: [
+        ConfigModule,
+        MongooseModule.forRootAsync({
+            imports: [ConfigModule],
+            useClass: MongoDbConnect,
+        }),
+    ],
+    providers: [MongoDbConnect],
 })
 export class DatabaseModule {}

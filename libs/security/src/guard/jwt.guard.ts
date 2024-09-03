@@ -7,36 +7,36 @@ import { Payload } from '../dto';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard(KEY_GUARD.JWT_GLOBAL) {
-   constructor(private readonly reflector: Reflector) {
-      super();
-   }
+    constructor(private readonly reflector: Reflector) {
+        super();
+    }
 
-   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-      const isPublic: boolean = this.reflector.getAllAndOverride<boolean>(KEY_DECORATOR.PUBLIC, [
-         context.getHandler(),
-         context.getClass(),
-      ]);
+    canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+        const isPublic: boolean = this.reflector.getAllAndOverride<boolean>(KEY_DECORATOR.PUBLIC, [
+            context.getHandler(),
+            context.getClass(),
+        ]);
 
-      if (isPublic) return true;
+        if (isPublic) return true;
 
-      return super.canActivate(context);
-   }
+        return super.canActivate(context);
+    }
 
-   handleRequest<Payload>(_: any, user: Payload): Payload {
-      this.checkUserLogin(user);
-      return user;
-   }
+    handleRequest<Payload>(_: any, user: Payload): Payload {
+        this.checkUserLogin(user);
+        return user;
+    }
 
-   private checkUserLogin(payload: Payload | Partial<Payload>): void {
-      if (!payload) {
-         throw new BadRequestException('hd');
-      }
+    private checkUserLogin(payload: Payload | Partial<Payload>): void {
+        if (!payload) {
+            throw new BadRequestException('hd');
+        }
 
-      const now: number = Date.now();
-      const expiredToken: number = payload?._expired;
+        const now: number = Date.now();
+        const expiredToken: number = payload?._expired;
 
-      if (now > expiredToken) {
-         throw new BadRequestException('');
-      }
-   }
+        if (now > expiredToken) {
+            throw new BadRequestException('');
+        }
+    }
 }

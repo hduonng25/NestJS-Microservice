@@ -1,5 +1,6 @@
 export type JwtConfigType = {
-   secret: string;
-   refresh: string;
-   expiredTime: number;
+    secret: string;
+    refresh: string;
+    accessTokenExpired: number;
+    refreshTokenExpired: number;
 };

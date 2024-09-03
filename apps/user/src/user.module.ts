@@ -8,16 +8,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Users, UserSchema } from './schema';
 
 @Module({
-   imports: [
-      ConfigModule.forRoot({
-         isGlobal: true,
-         envFilePath: ['apps/user/.env'],
-         load: [appConfig],
-      }),
-      DatabaseModule,
-      MongooseModule.forFeature([{ name: Users.name, schema: UserSchema }]),
-   ],
-   controllers: [UserControllerExternal, UserControllerInternal],
-   providers: [UserServiceExternal, UserServiceInternal],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: ['apps/user/.env'],
+            load: [appConfig],
+        }),
+        DatabaseModule,
+        MongooseModule.forFeature([{ name: Users.name, schema: UserSchema }]),
+    ],
+    controllers: [UserControllerExternal, UserControllerInternal],
+    providers: [UserServiceExternal, UserServiceInternal],
 })
 export class UserModule {}

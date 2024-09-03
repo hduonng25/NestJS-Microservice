@@ -7,36 +7,36 @@ import { ProductConfigType } from './config';
 import { JwtAuthGuard } from '@app/security';
 
 async function bootstrap() {
-   const app = await NestFactory.create(ProductModule);
-   const configs = app.get(ConfigService<ProductConfigType>);
+    const app = await NestFactory.create(ProductModule);
+    const configs = app.get(ConfigService<ProductConfigType>);
 
-   const host: string = configs.getOrThrow('app.host', { infer: true });
-   const port: number = configs.getOrThrow('app.port', { infer: true });
-   const prefix: string = configs.getOrThrow('app.prefix', {
-      infer: true,
-   });
+    const host: string = configs.getOrThrow('app.host', { infer: true });
+    const port: number = configs.getOrThrow('app.port', { infer: true });
+    const prefix: string = configs.getOrThrow('app.prefix', {
+        infer: true,
+    });
 
-   app.setGlobalPrefix(prefix);
+    app.setGlobalPrefix(prefix);
 
-   app.enableVersioning({
-      type: VersioningType.URI,
-      defaultVersion: '1',
-   });
+    app.enableVersioning({
+        type: VersioningType.URI,
+        defaultVersion: '1',
+    });
 
-   app.connectMicroservice<MicroserviceOptions>({
-      transport: Transport.TCP,
-      options: {
-         host,
-         port,
-      },
-   });
+    app.connectMicroservice<MicroserviceOptions>({
+        transport: Transport.TCP,
+        options: {
+            host,
+            port,
+        },
+    });
 
-   const reflector = app.get(Reflector);
-   app.useGlobalGuards(new JwtAuthGuard(reflector));
+    const reflector = app.get(Reflector);
+    app.useGlobalGuards(new JwtAuthGuard(reflector));
 
-   await app.startAllMicroservices();
+    await app.startAllMicroservices();
 
-   Logger.log(`Start service Product on port: ${port} and host: ${host}`, 'Service - Product');
-   await app.listen(port);
+    Logger.log(`Start service Product on port: ${port} and host: ${host}`, 'Service - Product');
+    await app.listen(port);
 }
 bootstrap();

@@ -1,5 +1,5 @@
-import { AllConfigType, AppConfigsType } from '@app/app';
+import { AllConfigType } from '@app/app';
 
 export * from './app.config';
 
-export type AllConfigServiceUser = AllConfigType & {};
+export type AllConfigServiceUser = AllConfigType;

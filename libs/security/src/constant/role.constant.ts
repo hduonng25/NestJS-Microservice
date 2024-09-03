@@ -1,5 +1,5 @@
 export enum ROLE_CONSTANT {
-   ADMIN = 'ADMIN',
-   STAFF = 'STAFF',
-   USER = 'USER',
+    ADMIN = 'ADMIN',
+    STAFF = 'STAFF',
+    USER = 'USER',
 }

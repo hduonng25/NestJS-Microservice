@@ -7,7 +7,7 @@ export * from './service.config.type';
 export * from './jwt.config.type';
 
 export type AllConfigType = {
-   app: AppConfigsType;
-   service: ServiceConfigType;
-   jwt: JwtConfigType;
+    app: AppConfigsType;
+    service: ServiceConfigType;
+    jwt: JwtConfigType;
 };

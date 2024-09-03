@@ -7,45 +7,52 @@ import serviceConfig from './config/service.config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { NAME_SERVICE } from '@app/app';
 import { AuthConfigType } from './config';
+import { SecurityModule } from '@app/security';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModel, AuthSchema } from './schema';
+import { DatabaseModule } from '@app/database';
 
 @Module({
-   imports: [
-      ConfigModule.forRoot({
-         isGlobal: true,
-         envFilePath: ['apps/auth/.env'],
-         load: [appConfig, serviceConfig],
-      }),
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: ['apps/auth/.env'],
+            load: [appConfig, serviceConfig],
+        }),
 
-      ClientsModule.registerAsync([
-         {
-            name: NAME_SERVICE.USER,
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: async (configService: ConfigService<AuthConfigType>) => {
-               try {
-                  const host: string = configService.getOrThrow('service.user.host', { infer: true });
-                  const port: number = configService.getOrThrow('service.user.port', { infer: true });
+        ClientsModule.registerAsync([
+            {
+                name: NAME_SERVICE.USER,
+                imports: [ConfigModule],
+                inject: [ConfigService],
+                useFactory: async (configService: ConfigService<AuthConfigType>) => {
+                    try {
+                        const host: string = configService.getOrThrow('service.user.host', { infer: true });
+                        const port: number = configService.getOrThrow('service.user.port', { infer: true });
 
-                  Logger.log(
-                     `Service Auth connect to Microservice User on host: ${host} and port: ${port}`,
-                     'AppModule - Auth',
-                  );
+                        Logger.log(
+                            `Service Auth connect to Microservice User on host: ${host} and port: ${port}`,
+                            'AppModule - Auth',
+                        );
 
-                  return {
-                     transport: Transport.TCP,
-                     options: {
-                        host,
-                        port,
-                     },
-                  };
-               } catch (error) {
-                  console.log(error);
-               }
+                        return {
+                            transport: Transport.TCP,
+                            options: {
+                                host,
+                                port,
+                            },
+                        };
+                    } catch (error) {
+                        console.log(error);
+                    }
+                },
             },
-         },
-      ]),
-   ],
-   controllers: [AuthController],
-   providers: [AuthService],
+        ]),
+        SecurityModule,
+        DatabaseModule,
+        MongooseModule.forFeature([{ name: AuthModel.name, schema: AuthSchema }]),
+    ],
+    controllers: [AuthController],
+    providers: [AuthService],
 })
 export class AuthModule {}

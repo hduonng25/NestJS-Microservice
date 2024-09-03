@@ -1,5 +1,5 @@
 export class CheckUserActive {
-   _id?: string;
+    _id?: string;
 
-   email: string;
+    email: string;
 }

@@ -4,6 +4,6 @@ import { ServiceConfigProduct } from './service.config.type';
 export * from './service.config.type';
 
 export type ProductConfigType = {
-   app: AppConfigsType;
-   service: ServiceConfigProduct;
+    app: AppConfigsType;
+    service: ServiceConfigProduct;
 };
