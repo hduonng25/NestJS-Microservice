@@ -1,5 +1,6 @@
 import { NAME_SERVICE, SuccessResult } from '@app/app';
 import { Payload, SecurityService } from '@app/security';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { SignInDTO } from './dto';
@@ -8,11 +9,13 @@ import { firstValueFrom } from 'rxjs';
 import { InjectModel } from '@nestjs/mongoose';
 import { AuthModel } from './schema';
 import { Model } from 'mongoose';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class AuthService {
     constructor(
         @Inject(NAME_SERVICE.USER) private readonly client: ClientProxy,
+        @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
         @InjectModel(AuthModel.name) private readonly authModel: Model<AuthModel>,
         private readonly securityService: SecurityService,
     ) {}
@@ -56,6 +59,14 @@ export class AuthService {
             { userId: user._id },
             { refreshToken: token?._refreshToken.token, expired: token?._refreshToken.expired },
         );
+
+        const cache = await this.cacheManager.get('login');
+
+        if (cache) {
+            return SuccessResult.OK(cache);
+        }
+
+        await this.cacheManager.set('login', token._accessToken);
         return SuccessResult.OK(token._accessToken);
     }
 }

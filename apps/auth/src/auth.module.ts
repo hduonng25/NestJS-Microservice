@@ -1,23 +1,25 @@
+import {  NAME_SERVICE } from "@app/app";
+import { CacheDataModule } from '@app/cache';
+import { DatabaseModule } from '@app/database';
+import { SecurityModule } from '@app/security';
 import { Logger, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import appConfig from './config/app.config';
-import serviceConfig from './config/service.config';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { NAME_SERVICE } from '@app/app';
 import { AuthConfigType } from './config';
-import { SecurityModule } from '@app/security';
-import { MongooseModule } from '@nestjs/mongoose';
+import appConfig from './config/app.config';
+import redisConfig from "./config/redis.config";
+import serviceConfig from './config/service.config';
 import { AuthModel, AuthSchema } from './schema';
-import { DatabaseModule } from '@app/database';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
             envFilePath: ['apps/auth/.env'],
-            load: [appConfig, serviceConfig],
+            load: [appConfig, serviceConfig, redisConfig],
         }),
 
         ClientsModule.registerAsync([
@@ -46,10 +48,11 @@ import { DatabaseModule } from '@app/database';
                         console.log(error);
                     }
                 },
-            },
+            }
         ]),
         SecurityModule,
         DatabaseModule,
+        CacheDataModule,
         MongooseModule.forFeature([{ name: AuthModel.name, schema: AuthSchema }]),
     ],
     controllers: [AuthController],

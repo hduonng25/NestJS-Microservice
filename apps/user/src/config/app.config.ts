@@ -7,6 +7,6 @@ export default registerAs(
         host: process.env.HOST,
         port: Number(process.env.PORT),
         prefix: process.env.PREFIX,
-        mongoUri: process.env.MONGO_URI,
+        mongoUri: process.env.MONGO_URI
     }),
 );

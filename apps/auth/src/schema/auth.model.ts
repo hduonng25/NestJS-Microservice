@@ -3,13 +3,13 @@ import { Prop, Schema } from '@nestjs/mongoose';
 @Schema()
 export class AuthModel {
     @Prop({
-        required: true,
+        required: false,
         type: String,
     })
     userId: string;
 
     @Prop({
-        required: true,
+        required: false,
         type: String,
     })
     refreshToken: string;
